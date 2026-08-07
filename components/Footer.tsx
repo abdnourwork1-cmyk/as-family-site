@@ -1,0 +1,69 @@
+import Image from "next/image";
+import Link from "next/link";
+import { siteConfig } from "@/config/site";
+import { navLinks } from "@/data/nav";
+import { DiscordIcon } from "@/components/icons";
+
+export function Footer() {
+  return (
+    <footer className="relative border-t border-as-gold/15 bg-as-black pb-28 pt-16 lg:pb-16">
+      <div className="container-as">
+        <div className="flex flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
+          <div className="flex flex-col items-center lg:items-start">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/branding/as-family-emblem.png"
+                alt="AS FAMILY emblem"
+                width={48}
+                height={48}
+                className="h-12 w-12 object-contain"
+              />
+              <span className="font-display text-xl font-bold tracking-[0.15em] text-as-white">
+                AS <span className="text-as-gold">FAMILY</span>
+              </span>
+            </div>
+            <p className="mt-3 text-sm text-as-muted">
+              Gaming. Community. Family.
+            </p>
+          </div>
+
+          <nav aria-label="Footer navigation">
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-3 lg:justify-start">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm font-medium text-as-muted transition-colors hover:text-as-gold-bright"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <a
+            href={siteConfig.discordUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gold !py-2.5"
+          >
+            <DiscordIcon className="h-4 w-4" />
+            JOIN AS FAMILY
+          </a>
+        </div>
+
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-as-gold/10 pt-8 text-center">
+          <p className="max-w-2xl text-xs leading-relaxed text-as-muted/80">
+            AS FAMILY is an independent gaming community and is not
+            affiliated with the publishers or developers of the games
+            mentioned on this website.
+          </p>
+          <p className="text-xs text-as-muted/60">
+            &copy; {new Date().getFullYear()} AS FAMILY. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
