@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Among Us artwork">
+  <defs>
+    <radialGradient id="au-glow" cx="0.5" cy="0.46" r="0.58">
+      <stop offset="0" stop-color="#4fb6cc" stop-opacity="0.3"/>
+      <stop offset="0.6" stop-color="#3f7be0" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#3f7be0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="#101014"/>
+  <rect width="800" height="450" fill="url(#au-glow)"/>
+  <g fill="#ffffff" opacity="0.55">
+    <circle cx="180" cy="90" r="2.4"/><circle cx="300" cy="150" r="1.6"/><circle cx="560" cy="110" r="2"/>
+    <circle cx="650" cy="200" r="1.6"/><circle cx="150" cy="330" r="1.8"/><circle cx="620" cy="340" r="2.2"/>
+  </g>
+  <circle cx="400" cy="220" r="112" fill="#c9ccd6" opacity="0.9"/>
+  <path d="M348 196c0-19 16-34 35-34h56c19 0 34 15 34 34v26c0 19-15 34-34 34h-57c-19 0-34-15-34-34z" fill="#7fd3e6"/>
+  <path d="M360 190c0-9 7-16 16-16h40c9 0 16 7 16 16v6c0 9-7 16-16 16h-40c-9 0-16-7-16-16z" fill="#d6f2f8" opacity="0.9"/>
+</svg>

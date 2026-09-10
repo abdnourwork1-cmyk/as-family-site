@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Minecraft artwork">
+  <defs>
+    <radialGradient id="mc-glow" cx="0.5" cy="0.46" r="0.6">
+      <stop offset="0" stop-color="#6ab04a" stop-opacity="0.28"/>
+      <stop offset="0.6" stop-color="#4a7d30" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#4a7d30" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="#101014"/>
+  <rect width="800" height="450" fill="url(#mc-glow)"/>
+  <g opacity="0.5">
+    <polygon points="250,150 330,196 250,242 170,196" fill="#7ec850"/>
+    <polygon points="170,196 250,242 250,330 170,284" fill="#5e9e3e"/>
+    <polygon points="330,196 250,242 250,330 330,284" fill="#456f2c"/>
+  </g>
+  <polygon points="440,70 590,156 440,242 290,156" fill="#7ec850"/>
+  <polygon points="290,156 440,242 440,410 290,324" fill="#5e9e3e"/>
+  <polygon points="590,156 440,242 440,410 590,324" fill="#456f2c"/>
+  <g fill="#101014" opacity="0.18">
+    <polygon points="440,110 490,138 440,166 390,138"/>
+    <polygon points="320,196 360,219 360,289 320,266"/>
+    <polygon points="520,219 560,196 560,266 520,289"/>
+  </g>
+</svg>

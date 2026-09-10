@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Valorant artwork">
+  <defs>
+    <radialGradient id="val-glow" cx="0.5" cy="0.46" r="0.58">
+      <stop offset="0" stop-color="#ff4655" stop-opacity="0.32"/>
+      <stop offset="0.6" stop-color="#ff4655" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#ff4655" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="#101014"/>
+  <rect width="800" height="450" fill="url(#val-glow)"/>
+  <circle cx="400" cy="225" r="92" fill="none" stroke="#ff4655" stroke-width="14" opacity="0.92"/>
+  <g stroke="#ff4655" stroke-width="14" stroke-linecap="round" opacity="0.92">
+    <line x1="400" y1="70" x2="400" y2="120"/>
+    <line x1="400" y1="330" x2="400" y2="380"/>
+    <line x1="245" y1="225" x2="295" y2="225"/>
+    <line x1="505" y1="225" x2="555" y2="225"/>
+  </g>
+  <circle cx="400" cy="225" r="12" fill="#ff4655"/>
+</svg>
