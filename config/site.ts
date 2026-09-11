@@ -11,6 +11,6 @@ export const siteConfig = {
   description:
     "Join AS FAMILY, a gaming Discord community for Free Fire, Among Us, Valorant, Minecraft and more. Find teammates, join events, earn XP and become part of the family.",
   url: siteUrl,
-  discordUrl: "https://discord.gg/PTEsKjkh",
+  discordUrl: "https://discord.gg/HqEZEtxs",
   ogImage: "/branding/as-family-emblem.png",
 } as const;

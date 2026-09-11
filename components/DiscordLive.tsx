@@ -1,14 +1,14 @@
-import { getDiscordWidget } from "@/lib/discord";
+import { getDiscordInviteStats } from "@/lib/discord";
 import { siteConfig } from "@/config/site";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { StaggerGroup, StaggerItem } from "@/components/motion/StaggerGroup";
 import { DiscordIcon } from "@/components/icons";
 
+const CARD_HOVER =
+  "transition-all duration-300 ease-premium hover:-translate-y-0.5 hover:border-as-gold/40 hover:shadow-[0_10px_30px_-12px_rgba(212,175,55,0.25)]";
+
 export async function DiscordLive() {
-  const widget = await getDiscordWidget();
-  const inviteUrl = widget?.instantInvite || siteConfig.discordUrl;
-  const onlineMembers = widget?.members.filter((m) => m.avatarUrl) ?? [];
+  const stats = await getDiscordInviteStats();
 
   return (
     <section className="relative overflow-hidden bg-as-dark py-24 sm:py-28">
@@ -23,49 +23,31 @@ export async function DiscordLive() {
           description="Find your squad, join voice channels, play together and become part of the family."
         />
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-2">
-          <Reveal variant="left" duration={0.7} className="mx-auto w-full max-w-md">
-            <div className="gold-border-glow glass-card relative rounded-2xl p-7 sm:p-8">
+        <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-2">
+          {/* Identity card — who we are + the CTA */}
+          <Reveal variant="up" duration={0.6} className="h-full">
+            <div
+              className={`glass-card ${CARD_HOVER} flex h-full flex-col justify-between p-7 sm:p-8`}
+            >
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-as-gold/40 bg-as-gold/10 text-as-gold-bright">
                   <DiscordIcon className="h-7 w-7" />
                 </div>
                 <div>
                   <p className="font-display text-lg font-bold text-as-white">
-                    {widget?.name ?? siteConfig.name}
+                    {stats?.guildName ?? siteConfig.name}
                   </p>
-                  {widget ? (
-                    <span className="mt-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-emerald-400">
-                      <span className="relative flex h-2 w-2" aria-hidden="true">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                      </span>
-                      LIVE
-                    </span>
-                  ) : (
-                    <span className="mt-1 block text-xs font-medium uppercase tracking-widest text-as-muted">
-                      Join the community on Discord
-                    </span>
-                  )}
+                  <p className="mt-1 text-xs font-medium uppercase tracking-widest text-as-muted">
+                    Join the community on Discord
+                  </p>
                 </div>
               </div>
 
-              {widget ? (
-                <div className="mt-7 border-t border-as-gold/15 pt-6">
-                  <p className="font-display text-4xl font-bold text-as-gold-bright">
-                    {widget.presenceCount}
-                  </p>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-as-muted">
-                    Online Now
-                  </p>
-                </div>
-              ) : null}
-
               <a
-                href={inviteUrl}
+                href={siteConfig.discordUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold mt-7 w-full"
+                className="btn-gold mt-8 w-full"
               >
                 <DiscordIcon className="h-5 w-5" />
                 JOIN DISCORD
@@ -73,48 +55,55 @@ export async function DiscordLive() {
             </div>
           </Reveal>
 
-          {onlineMembers.length > 0 ? (
-            <Reveal variant="right" duration={0.7} className="flex flex-col gap-4">
-              <p className="text-center text-xs font-semibold uppercase tracking-widest text-as-muted lg:text-left">
-                Players Online
-              </p>
-              <StaggerGroup
-                stagger={0.06}
-                className="flex flex-wrap justify-center gap-3 lg:justify-start"
+          {/* Live stats card — real invite data, or a balanced fallback */}
+          <Reveal variant="up" delay={0.1} duration={0.6} className="h-full">
+            {stats ? (
+              <div
+                className={`gold-border-glow glass-card ${CARD_HOVER} flex h-full flex-col p-7 sm:p-8`}
               >
-                {onlineMembers.map((member) => (
-                  <StaggerItem key={member.id} variant="scale" duration={0.4}>
-                    <div className="glass-card flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={member.avatarUrl ?? undefined}
-                        alt=""
-                        width={28}
-                        height={28}
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        className="h-7 w-7 rounded-full object-cover"
-                      />
-                      <span className="max-w-[9rem] truncate text-xs font-medium text-as-white">
-                        {member.username}
-                      </span>
-                    </div>
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
-            </Reveal>
-          ) : (
-            <Reveal
-              variant="right"
-              duration={0.7}
-              className="flex flex-col items-center justify-center gap-3 text-center lg:items-start lg:text-left"
-            >
-              <p className="max-w-sm text-sm leading-relaxed text-as-muted">
-                Jump into voice channels, chat and play together — join now
-                and see who&apos;s already inside.
-              </p>
-            </Reveal>
-          )}
+                <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-emerald-400">
+                  <span className="relative flex h-2 w-2" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  Live
+                </span>
+
+                <div className="mt-6">
+                  <p className="font-display text-6xl font-extrabold leading-none tracking-tight bg-gold-gradient bg-clip-text text-transparent sm:text-7xl">
+                    {stats.presenceCount}
+                  </p>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-as-muted">
+                    Online Now
+                  </p>
+                </div>
+
+                <div className="mt-auto flex items-baseline gap-2 border-t border-as-gold/15 pt-6">
+                  <span className="font-display text-2xl font-bold text-as-white">
+                    {stats.memberCount}
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-widest text-as-muted">
+                    Members
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div
+                className={`glass-card ${CARD_HOVER} flex h-full flex-col items-center justify-center gap-3 p-7 text-center sm:p-8`}
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-as-gold/30 bg-as-gold/5 text-as-gold-bright">
+                  <DiscordIcon className="h-7 w-7" />
+                </div>
+                <p className="font-display text-base font-bold text-as-white">
+                  Live stats are on their way
+                </p>
+                <p className="max-w-xs text-sm leading-relaxed text-as-muted">
+                  Real-time online activity will appear here once the
+                  community&apos;s live status is available.
+                </p>
+              </div>
+            )}
+          </Reveal>
         </div>
       </div>
     </section>

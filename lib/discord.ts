@@ -1,98 +1,90 @@
 /**
- * Server-side reader for Discord's public Server Widget JSON endpoint.
- * https://discord.com/developers/docs/resources/guild#get-guild-widget-json
+ * Server-side reader for Discord's public Invite endpoint.
+ * https://discord.com/developers/docs/resources/invite#get-invite
  *
  * No bot token or secret is required — this is a public, unauthenticated
- * endpoint that only works if the server owner has enabled "Server Widget"
- * in Discord's Server Settings. If it's disabled, or the request fails for
- * any reason, this returns null and callers must render a graceful fallback.
+ * endpoint keyed off the server's invite code. It replaces the old Guild
+ * Widget JSON endpoint, which requires "Server Widget" to be enabled in
+ * Discord and was disabled for this server. The invite endpoint works for
+ * any server with an active invite and returns approximate member/online
+ * counts via `with_counts=true`.
+ *
+ * If the request fails for any reason (invite expired/invalid, network
+ * error, unexpected shape), this returns null and callers must render a
+ * graceful fallback — the join flow itself never depends on this data.
  */
 
-export type DiscordWidgetMember = {
-  id: string;
-  username: string;
-  avatarUrl: string | null;
-  status: string | null;
-};
-
-export type DiscordWidget = {
-  name: string;
-  /** Invite URL from the widget, when Discord provides one. */
-  instantInvite: string | null;
-  /** Real-time count of members visible through the widget. Not the total member count. */
+export type DiscordInviteStats = {
+  guildName: string;
+  /** Discord's approximate total member count for the server. */
+  memberCount: number;
+  /** Discord's approximate count of members currently online. */
   presenceCount: number;
-  /** Small sample of visible online members (already capped). */
-  members: DiscordWidgetMember[];
 };
 
-const DEFAULT_GUILD_ID = "1327023198323347496";
-const GUILD_ID = process.env.DISCORD_GUILD_ID ?? DEFAULT_GUILD_ID;
-const WIDGET_URL = `https://discord.com/api/guilds/${GUILD_ID}/widget.json`;
+const DEFAULT_INVITE_CODE = "HqEZEtxs";
+const INVITE_CODE = process.env.DISCORD_INVITE_CODE ?? DEFAULT_INVITE_CODE;
+const INVITE_URL = `https://discord.com/api/v10/invites/${INVITE_CODE}?with_counts=true`;
 const REVALIDATE_SECONDS = 90;
-const MAX_MEMBERS_SHOWN = 6;
 
 function readString(value: unknown): string | null {
   return typeof value === "string" && value.length > 0 ? value : null;
 }
 
-function readMembers(value: unknown): DiscordWidgetMember[] {
-  if (!Array.isArray(value)) return [];
-
-  const members: DiscordWidgetMember[] = [];
-  for (const entry of value) {
-    if (!entry || typeof entry !== "object") continue;
-    const record = entry as Record<string, unknown>;
-    const username = readString(record.username);
-    if (!username) continue;
-
-    members.push({
-      id: readString(record.id) ?? username,
-      username,
-      avatarUrl: readString(record.avatar_url),
-      status: readString(record.status),
-    });
-
-    if (members.length >= MAX_MEMBERS_SHOWN) break;
-  }
-  return members;
+function readNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
 /**
- * Fetches the Discord widget server-side with ISR-style revalidation, so
- * browsers never poll Discord directly. Never throws — returns null on any
- * failure (widget disabled, network error, unexpected shape) and logs the
- * reason server-side only.
+ * Fetches approximate member/online counts for the AS FAMILY Discord server
+ * from its invite, with ISR-style revalidation so browsers never poll
+ * Discord directly. Never throws — returns null on any failure and logs the
+ * reason server-side only. Expected/handled failures (expired invite, etc.)
+ * are logged as warnings, not errors, since they're already recovered from.
  */
-export async function getDiscordWidget(): Promise<DiscordWidget | null> {
+export async function getDiscordInviteStats(): Promise<DiscordInviteStats | null> {
   try {
-    const response = await fetch(WIDGET_URL, {
+    const response = await fetch(INVITE_URL, {
       next: { revalidate: REVALIDATE_SECONDS },
     });
 
     if (!response.ok) {
-      console.error(
-        `[discord-widget] request failed with status ${response.status} (widget likely disabled for this server)`
+      console.warn(
+        `[discord-invite] request failed with status ${response.status} (invite may be expired or invalid)`
       );
       return null;
     }
 
     const data: unknown = await response.json();
     if (!data || typeof data !== "object") {
-      console.error("[discord-widget] unexpected response shape");
+      console.warn("[discord-invite] unexpected response shape");
       return null;
     }
 
     const record = data as Record<string, unknown>;
-    const presenceCount = record.presence_count;
+    const memberCount = readNumber(record.approximate_member_count);
+    const presenceCount = readNumber(record.approximate_presence_count);
+
+    // Both counts require `with_counts=true` to be present at all — if
+    // Discord ever omits them, there's nothing real to show.
+    if (memberCount === null || presenceCount === null) {
+      console.warn("[discord-invite] response missing approximate counts");
+      return null;
+    }
+
+    const guild = record.guild;
+    const guildName =
+      guild && typeof guild === "object"
+        ? readString((guild as Record<string, unknown>).name)
+        : null;
 
     return {
-      name: readString(record.name) ?? "AS FAMILY",
-      instantInvite: readString(record.instant_invite),
-      presenceCount: typeof presenceCount === "number" ? presenceCount : 0,
-      members: readMembers(record.members),
+      guildName: guildName ?? "AS FAMILY",
+      memberCount,
+      presenceCount,
     };
   } catch (error) {
-    console.error("[discord-widget] fetch failed", error);
+    console.error("[discord-invite] fetch failed", error);
     return null;
   }
 }
