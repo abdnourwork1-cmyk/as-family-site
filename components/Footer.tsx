@@ -3,12 +3,17 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { navLinks } from "@/data/nav";
 import { DiscordIcon } from "@/components/icons";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function Footer() {
   return (
     <footer className="relative border-t border-as-gold/15 bg-as-black pb-28 pt-16 lg:pb-16">
       <div className="container-as">
-        <div className="flex flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left">
+        <Reveal
+          variant="fade"
+          duration={0.6}
+          className="flex flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left"
+        >
           <div className="flex flex-col items-center lg:items-start">
             <div className="flex items-center gap-3">
               <Image
@@ -33,7 +38,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm font-medium text-as-muted transition-colors hover:text-as-gold-bright"
+                    className="text-sm font-medium text-as-muted transition-colors duration-300 ease-premium hover:text-as-gold-bright"
                   >
                     {link.label}
                   </Link>
@@ -51,7 +56,7 @@ export function Footer() {
             <DiscordIcon className="h-4 w-4" />
             JOIN AS FAMILY
           </a>
-        </div>
+        </Reveal>
 
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-as-gold/10 pt-8 text-center">
           <p className="max-w-2xl text-xs leading-relaxed text-as-muted/80">

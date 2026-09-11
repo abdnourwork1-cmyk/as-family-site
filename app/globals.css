@@ -60,7 +60,7 @@
   }
 
   .btn-gold {
-    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-md bg-gold-gradient bg-[length:200%_100%] px-7 py-3.5 font-display text-sm sm:text-base font-bold tracking-widest text-as-black shadow-gold transition-all duration-300 hover:shadow-gold-lg hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-as-gold-bright;
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-md bg-gold-gradient bg-[length:200%_100%] px-7 py-3.5 font-display text-sm sm:text-base font-bold tracking-widest text-as-black shadow-gold transition-all duration-300 ease-premium hover:shadow-gold-lg hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] active:duration-150 focus-visible:outline-2 focus-visible:outline-as-gold-bright;
   }
 
   .btn-gold:hover {
@@ -68,11 +68,11 @@
   }
 
   .btn-outline-gold {
-    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-as-gold/60 bg-as-white/[0.02] px-7 py-3.5 font-display text-sm sm:text-base font-bold tracking-widest text-as-gold-bright transition-all duration-300 hover:border-as-gold hover:bg-as-gold/10 hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-as-gold/60 bg-as-white/[0.02] px-7 py-3.5 font-display text-sm sm:text-base font-bold tracking-widest text-as-gold-bright transition-all duration-300 ease-premium hover:border-as-gold hover:bg-as-gold/10 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] active:duration-150;
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1.5 hover:border-as-gold/50 hover:shadow-gold;
+    @apply transition-all duration-300 ease-premium hover:-translate-y-1.5 hover:border-as-gold/50 hover:shadow-gold;
   }
 
   .particle-field {
@@ -86,6 +86,42 @@
 
   .reveal {
     opacity: 1;
+  }
+
+  /* Very subtle pointer-reactive gold lighting for premium cards. Position is
+     written into --glow-x/--glow-y by usePointerGlow(); inert until hovered,
+     and only ever active with a real mouse (see media query below). */
+  .pointer-glow {
+    position: relative;
+  }
+
+  .pointer-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      rgba(212, 175, 55, 0.14),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .pointer-glow > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  @layer components {
+    .pointer-glow:hover::before {
+      opacity: 1;
+    }
   }
 }
 

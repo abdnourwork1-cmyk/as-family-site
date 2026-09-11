@@ -2,14 +2,16 @@
 
 import type { Game } from "@/data/games";
 import { gameIcons } from "@/components/icons";
+import { usePointerGlow } from "@/hooks/usePointerGlow";
 
 const FALLBACK_IMAGE = "/games/fallback.svg";
 
 export function GameCard({ game }: { game: Game }) {
   const Icon = gameIcons[game.icon];
+  const { onPointerMove } = usePointerGlow<HTMLDivElement>();
 
   return (
-    <div className="glass-card group flex h-full flex-col overflow-hidden bg-as-surface/70 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.55)] transition duration-300 hover:-translate-y-1 hover:border-as-gold/45 hover:shadow-[0_12px_30px_-14px_rgba(0,0,0,0.7)]">
+    <div className="glass-card group flex h-full flex-col overflow-hidden bg-as-surface/70 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.55)] transition duration-300 ease-premium hover:-translate-y-1.5 hover:border-as-gold/45 hover:shadow-[0_12px_30px_-14px_rgba(0,0,0,0.7)]">
       <div className="relative h-40 w-full overflow-hidden sm:h-44">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -33,8 +35,11 @@ export function GameCard({ game }: { game: Game }) {
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-as-gold/30 bg-as-gold/5 text-as-gold-bright transition-colors group-hover:bg-as-gold/15">
+      <div
+        onPointerMove={onPointerMove}
+        className="pointer-glow flex flex-1 flex-col p-5"
+      >
+        <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-as-gold/30 bg-as-gold/5 text-as-gold-bright transition-colors duration-300 ease-premium group-hover:bg-as-gold/15 group-hover:text-as-gold-bright group-hover:shadow-[0_0_16px_rgba(212,175,55,0.25)]">
           <Icon className="h-6 w-6" />
         </span>
         <h3 className="mt-4 font-display text-lg font-bold tracking-wide text-as-white">

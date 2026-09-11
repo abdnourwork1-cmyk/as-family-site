@@ -1,6 +1,7 @@
 import { siteConfig } from "@/config/site";
 import { ParticleField } from "@/components/ParticleField";
 import { DiscordIcon } from "@/components/icons";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function DiscordCTA() {
   return (
@@ -9,9 +10,13 @@ export function DiscordCTA() {
       <ParticleField />
 
       <div className="container-as relative">
-        <div className="gold-border-glow glass-card mx-auto flex max-w-3xl flex-col items-center rounded-2xl px-6 py-14 text-center sm:px-14">
+        <Reveal
+          variant="scale"
+          duration={0.8}
+          className="gold-border-glow glass-card mx-auto flex max-w-3xl flex-col items-center rounded-2xl px-6 py-14 text-center sm:px-14"
+        >
           <div
-            className="absolute -top-16 h-40 w-40 rounded-full bg-as-gold/20 blur-[80px]"
+            className="absolute -top-16 h-40 w-40 rounded-full bg-as-gold/20 blur-[80px] animate-breathe"
             aria-hidden="true"
           />
           <span className="section-eyebrow">Your Move</span>
@@ -31,7 +36,7 @@ export function DiscordCTA() {
             <DiscordIcon className="h-5 w-5" />
             JOIN AS FAMILY NOW
           </a>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

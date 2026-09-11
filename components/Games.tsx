@@ -1,6 +1,7 @@
 import { games } from "@/data/games";
 import { GameCard } from "@/components/GameCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { StaggerGroup, StaggerItem } from "@/components/motion/StaggerGroup";
 
 export function Games() {
   return (
@@ -15,11 +16,16 @@ export function Games() {
           description="From battle royale to social deduction, tactical shooters to sandbox survival — the family plays it all."
         />
 
-        <div className="mt-12 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <StaggerGroup
+          stagger={0.1}
+          className="mt-12 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {games.map((game) => (
-            <GameCard key={game.slug} game={game} />
+            <StaggerItem key={game.slug} className="h-full">
+              <GameCard game={game} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

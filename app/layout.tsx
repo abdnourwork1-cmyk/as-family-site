@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { EASE } from "@/lib/motion";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -81,7 +83,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cinzel.variable} ${inter.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <MotionConfig reducedMotion="user" transition={{ duration: 0.6, ease: EASE }}>
+          {children}
+        </MotionConfig>
+      </body>
     </html>
   );
 }

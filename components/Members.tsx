@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { motion, type Variants } from "framer-motion";
 import { members, type MemberStatus } from "@/data/members";
 import { SectionHeading } from "@/components/SectionHeading";
+import { EASE, VIEWPORT, scaleIn, staggerContainer } from "@/lib/motion";
 
 /**
  * Discord's default avatar index for the new (pomelo) username system:
@@ -35,52 +36,12 @@ const STATUS_COLOR: Record<MemberStatus, string> = {
   offline: "#747f8d",
 };
 
+const avatarPop: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: EASE, delay: 0.1 } },
+};
+
 export function Members() {
-  // Cards render visible by default (server + first client paint). The entrance
-  // animation is pure progressive enhancement: it can only ever reveal a card,
-  // never hide one, so a failed observer / no JS still shows all 9 members.
-  const [mounted, setMounted] = useState(false);
-  const [revealed, setRevealed] = useState(false);
-  const gridRef = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    const el = gridRef.current;
-
-    if (reduceMotion || !el || typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
-    );
-    observer.observe(el);
-
-    // Safety net: reveal no matter what after a short delay.
-    const timer = window.setTimeout(() => {
-      setRevealed(true);
-      observer.disconnect();
-    }, 900);
-
-    return () => {
-      observer.disconnect();
-      window.clearTimeout(timer);
-    };
-  }, []);
-
-  const hidden = mounted && !revealed;
-
   return (
     <section id="members" className="relative bg-as-black py-24 sm:py-28">
       <div className="container-as">
@@ -90,24 +51,28 @@ export function Members() {
           description="Meet the people who make the community."
         />
 
-        <ul
-          ref={gridRef}
+        <motion.ul
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          variants={staggerContainer(0.08)}
           className="mx-auto mt-14 grid max-w-5xl list-none grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {members.map((member, index) => {
+          {members.map((member) => {
             const status: MemberStatus = member.status ?? "offline";
             return (
-              <li key={member.id} className="w-full max-w-sm">
-                <article
-                  className={`glass-card card-hover group flex h-full flex-col items-center p-8 text-center transition duration-500 ease-out motion-reduce:transition-none ${
-                    hidden
-                      ? "translate-y-4 opacity-0"
-                      : "translate-y-0 opacity-100"
-                  }`}
-                  style={{ transitionDelay: hidden ? "0ms" : `${index * 60}ms` }}
-                >
+              <motion.li
+                key={member.id}
+                variants={scaleIn}
+                transition={{ duration: 0.55, ease: EASE }}
+                className="w-full max-w-sm"
+              >
+                <article className="glass-card card-hover group flex h-full flex-col items-center p-8 text-center">
                   <div className="relative h-24 w-24 shrink-0">
-                    <div className="h-full w-full overflow-hidden rounded-full bg-as-surface ring-2 ring-as-gold/70 ring-offset-2 ring-offset-as-black shadow-[0_0_18px_rgba(212,175,55,0.18)] transition duration-300 group-hover:scale-[1.04] group-hover:shadow-[0_0_26px_rgba(212,175,55,0.3)] group-hover:ring-as-gold motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                    <motion.div
+                      variants={avatarPop}
+                      className="h-full w-full overflow-hidden rounded-full bg-as-surface ring-2 ring-as-gold/70 ring-offset-2 ring-offset-as-black shadow-[0_0_18px_rgba(212,175,55,0.18)] transition duration-300 ease-premium group-hover:scale-[1.04] group-hover:shadow-[0_0_26px_rgba(212,175,55,0.3)] group-hover:ring-as-gold motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={resolvedAvatarUrl(member.id, member.avatar)}
@@ -125,7 +90,7 @@ export function Members() {
                           img.src = defaultAvatarUrl(member.id);
                         }}
                       />
-                    </div>
+                    </motion.div>
                     <span
                       className="absolute bottom-0.5 right-0.5 h-5 w-5 rounded-full border-[3px] border-as-black"
                       style={{ backgroundColor: STATUS_COLOR[status] }}
@@ -134,14 +99,14 @@ export function Members() {
                     />
                   </div>
 
-                  <h3 className="mt-5 break-words font-display text-lg font-bold tracking-wide text-as-white">
+                  <h3 className="mt-5 break-words font-display text-lg font-bold tracking-wide text-as-white transition-transform duration-300 ease-premium group-hover:-translate-y-0.5">
                     {member.name}
                   </h3>
                 </article>
-              </li>
+              </motion.li>
             );
           })}
-        </ul>
+        </motion.ul>
       </div>
     </section>
   );

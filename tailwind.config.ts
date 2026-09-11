@@ -55,6 +55,10 @@ const config: Config = {
           "0%": { transform: "translateY(0) translateX(0)" },
           "100%": { transform: "translateY(-120px) translateX(20px)" },
         },
+        breathe: {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "0.65", transform: "scale(1.05)" },
+        },
       },
       animation: {
         shine: "shine 3.5s linear infinite",
@@ -62,6 +66,10 @@ const config: Config = {
         "pulse-glow": "pulse-glow 2.5s ease-in-out infinite",
         "fade-up": "fade-up 0.7s ease-out forwards",
         drift: "drift 12s linear infinite",
+        breathe: "breathe 9s ease-in-out infinite",
+      },
+      transitionTimingFunction: {
+        premium: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },
