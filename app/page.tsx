@@ -4,6 +4,7 @@ import { Members } from "@/components/Members";
 import { Games } from "@/components/Games";
 import { Features } from "@/components/Features";
 import { Community } from "@/components/Community";
+import { DiscordLive } from "@/components/DiscordLive";
 import { RankSystem } from "@/components/RankSystem";
 import { LevelTiers } from "@/components/LevelTiers";
 import { Events } from "@/components/Events";
@@ -22,6 +23,7 @@ export default function Home() {
         <Games />
         <Features />
         <Community />
+        <DiscordLive />
         <RankSystem />
         <LevelTiers />
         <Events />
