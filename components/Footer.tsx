@@ -15,17 +15,15 @@ export function Footer() {
           className="flex flex-col items-center gap-10 text-center lg:flex-row lg:items-start lg:justify-between lg:text-left"
         >
           <div className="flex flex-col items-center lg:items-start">
-            <div className="flex items-center gap-3">
+            <div className="as-logo-shell as-logo-shell--footer">
               <Image
                 src="/branding/as-family-emblem.png"
                 alt="AS FAMILY emblem"
-                width={48}
-                height={48}
-                className="h-12 w-12 object-contain"
+                width={84}
+                height={84}
+                className="as-logo-image h-20 w-20 object-contain"
+                unoptimized
               />
-              <span className="font-display text-xl font-bold tracking-[0.15em] text-as-white">
-                AS <span className="text-as-gold">FAMILY</span>
-              </span>
             </div>
             <p className="mt-3 text-sm text-as-muted">
               Gaming. Community. Family.

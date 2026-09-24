@@ -1,35 +1,19 @@
-export type MemberStatus = "online" | "idle" | "dnd" | "offline";
+export type MemberStatus =
+  | "online"
+  | "idle"
+  | "dnd"
+  | "offline";
 
 export type Member = {
-  /**
-   * Discord User ID. Source of truth for resolving the member's Discord
-   * profile avatar.
-   */
   id: string;
-  /** Display name, shown on the card exactly as provided. */
   name: string;
-  /**
-   * Direct Discord CDN avatar URL for this member
-   * (`https://cdn.discordapp.com/avatars/<id>/<hash>.png`).
-   *
-   * Leave unset (or set to null) for members with no custom avatar — the card
-   * then shows Discord's clean default placeholder derived from the User ID.
-   * If a member changes their avatar, update the hash here; until then the
-   * card falls back to the default placeholder automatically.
-   */
   avatar?: string | null;
-  /**
-   * Presence shown by the status dot. Defaults to "offline" when unknown.
-   */
   status?: MemberStatus;
 };
 
-const CDN = "https://cdn.discordapp.com/avatars";
+const CDN =
+  "https://cdn.discordapp.com/avatars";
 
-/**
- * AS FAMILY members, displayed in this exact order.
- * To add a future member, append another object to this array.
- */
 export const members: Member[] = [
   {
     id: "1057641152985178123",
@@ -75,5 +59,69 @@ export const members: Member[] = [
     id: "1537920356860559381",
     name: "AS JNX",
     avatar: `${CDN}/1537920356860559381/efeb949b970d2ceaf717c9ca2ffcd3e7.png?size=256`,
+  },
+
+  {
+    id: "1169744317410201622",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1423653514734866506",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "691994977743405066",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1400419683319939153",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1423966684112359564",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1542991247369568402",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+
+  {
+    id: "922465225926664213",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1403407302404608071",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1374732303015608351",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "804378595912056882",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+  {
+    id: "1428345004216025221",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
+  },
+
+  // Latest member
+  {
+    id: "1486835968203034695",
+    name: "AS FAMILY MEMBER",
+    avatar: null,
   },
 ];

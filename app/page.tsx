@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { Members } from "@/components/Members";
 import { Games } from "@/components/Games";
+import { OwnerSocial } from "@/components/OwnerSocial";
+import { Members } from "@/components/Members";
 import { Features } from "@/components/Features";
 import { Community } from "@/components/Community";
 import { DiscordLive } from "@/components/DiscordLive";
@@ -17,20 +18,35 @@ export default function Home() {
   return (
     <>
       <Navbar />
+
       <main>
         <Hero />
-        <Members />
+
         <Games />
+
+        <OwnerSocial />
+
+        <Members />
+
         <Features />
+
         <Community />
+
         <DiscordLive />
+
         <RankSystem />
+
         <LevelTiers />
+
         <Events />
+
         <DiscordCTA />
+
         <FAQ />
       </main>
+
       <Footer />
+
       <MobileStickyCTA />
     </>
   );

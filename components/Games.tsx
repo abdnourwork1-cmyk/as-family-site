@@ -1,15 +1,30 @@
 import { games } from "@/data/games";
 import { GameCard } from "@/components/GameCard";
 import { SectionHeading } from "@/components/SectionHeading";
-import { StaggerGroup, StaggerItem } from "@/components/motion/StaggerGroup";
+import {
+  StaggerGroup,
+  StaggerItem,
+} from "@/components/motion/StaggerGroup";
 
 export function Games() {
   return (
     <section
       id="games"
-      className="relative scroll-mt-24 bg-as-black pb-24 pt-28 sm:pb-28 sm:pt-32"
+      className="relative scroll-mt-24 overflow-hidden bg-as-black pb-10 pt-10 sm:pb-12 sm:pt-14 lg:pt-16"
     >
-      <div className="container-as">
+      {/* Subtle separator between Hero and Games */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-as-gold/30 to-transparent"
+        aria-hidden="true"
+      />
+
+      {/* Soft premium gold atmosphere */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-[280px] w-[680px] -translate-x-1/2 rounded-full bg-as-gold/[0.035] blur-[110px]"
+        aria-hidden="true"
+      />
+
+      <div className="container-as relative">
         <SectionHeading
           eyebrow="What We Play"
           title="GAMES WE PLAY"
@@ -18,7 +33,7 @@ export function Games() {
 
         <StaggerGroup
           stagger={0.1}
-          className="mt-12 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-10 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {games.map((game) => (
             <StaggerItem key={game.slug} className="h-full">

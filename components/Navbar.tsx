@@ -48,18 +48,19 @@ export function Navbar() {
       >
         <Link
           href="#home"
-          className="flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-as-gold-bright"
+          aria-label="AS FAMILY home"
+          className="flex items-center focus-visible:outline-2 focus-visible:outline-as-gold-bright"
         >
-          <Image
-            src="/branding/as-family-emblem.png"
-            alt="AS FAMILY emblem"
-            width={44}
-            height={44}
-            className="h-11 w-11 object-contain"
-            priority
-          />
-          <span className="font-display text-lg font-bold tracking-[0.15em] text-as-white">
-            AS <span className="text-as-gold">FAMILY</span>
+          <span className="as-logo-shell as-logo-shell--nav" aria-hidden="true">
+            <Image
+              src="/branding/as-family-emblem.png"
+              alt=""
+              width={58}
+              height={58}
+              className="as-logo-image h-14 w-14 object-contain"
+              priority
+              unoptimized
+            />
           </span>
         </Link>
 
